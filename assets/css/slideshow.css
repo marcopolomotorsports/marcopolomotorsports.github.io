@@ -1,0 +1,26 @@
+/* assets/css/slideshow.css */
+
+/* Ensure the slideshow container fills and transitions smoothly */
+#home {
+  /* Cover the entire section */
+  background-size: cover !important;
+  background-position: center !important;
+
+  /* Smooth fade between background images */
+  transition: background-image 0.7s ease-in-out;
+}
+
+/* Optional: overlay color (if you want a semi‑opaque overlay) */
+#home::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(0, 0, 0, 0.45);
+  pointer-events: none;
+}
+
+/* Make sure the section is positioned relative for the overlay */
+#home {
+  position: relative;
+  overflow: hidden;
+}
