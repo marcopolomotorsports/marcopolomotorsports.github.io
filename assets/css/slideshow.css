@@ -1,17 +1,19 @@
 /* assets/css/slideshow.css */
 
-/* Ensure the slideshow container fills and transitions smoothly */
-#home {
-  /* Cover the entire section */
-  background-size: cover !important;
-  background-position: center !important;
-
-  /* Smooth fade between background images */
-  transition: background-image 0.7s ease-in-out;
-}
-
-/* Make sure the section is positioned relative for the overlay */
 #home {
   position: relative;
   overflow: hidden;
+
+  /* Cover fully */
+  background-size: cover !important;
+  background-position: center !important;
+
+  /* animate opacity */
+  transition: opacity 0.7s ease-in-out;
+  opacity: 1;
+}
+
+/* when fading out */
+#home.fade {
+  opacity: 0;
 }
