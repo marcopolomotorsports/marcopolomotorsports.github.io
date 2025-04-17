@@ -1,51 +1,43 @@
-// assets/js/slideshow.js
-// Random hero-image slideshow: shows 0.jpg on load, then randomly cycles through 1–24 without repeats
-
 document.addEventListener('DOMContentLoaded', function() {
   var hero = document.getElementById('home');
   if (!hero) return;
+  var slideCount = 24;
+  var slidesContainer = document.createElement('div');
+  slidesContainer.className = 'slides';
+  hero.insertBefore(slidesContainer, hero.firstChild);
 
-  // Build array of slide image URLs
-  var images = [];
-  for (var i = 1; i <= 24; i++) {
-    images.push('assets/images/slideshow/' + i + '.jpg');
+  // Prepare slide sequence: random without repeats
+  var order = Array.from({length: slideCount+1}, (_, i)=>i);
+  // Fisher–Yates shuffle
+  for (var i = order.length - 1; i > 0; i--) {
+    var j = Math.floor(Math.random() * (i + 1));
+    [order[i], order[j]] = [order[j], order[i]];
   }
-
-  // Preload all images
-  images.forEach(function(src) {
-    var img = new Image();
-    img.src = src;
+  // Ensure default slide (0) is first
+  var zeroIdx = order.indexOf(0);
+  [order[0], order[zeroIdx]] = [order[zeroIdx], order[0]];
+  
+  // Create slide elements and preload first two
+  order.forEach(function(idx, i) {
+    var slide = document.createElement('div');
+    slide.className = 'slide' + (i===0 ? ' active' : '');
+    slide.style.backgroundImage = 'url("assets/images/slideshow/' + idx + '.jpg")';
+    slidesContainer.appendChild(slide);
+    if (i <= 1) {
+      new Image().src = 'assets/images/slideshow/' + idx + '.jpg';
+    }
   });
 
-  // Show default image 0.jpg immediately
-  var defaultImg = 'assets/images/slideshow/0.jpg';
-  hero.style.backgroundImage = 'url("' + defaultImg + '")';
-
-  // Track which images have been shown
-  var shown = [];
-  var interval = 5000; // milliseconds
-
-  // Function to pick and display the next slide
+  var current = 0;
+  var interval = 5000;
   function nextSlide() {
-    // Reset once all have been shown
-    if (shown.length === images.length) {
-      shown = [];
-    }
-
-    // Pick a random index not already shown
-    var idx;
-    do {
-      idx = Math.floor(Math.random() * images.length);
-    } while (shown.includes(idx));
-    shown.push(idx);
-
-    // Update background-image
-    hero.style.backgroundImage = 'url("' + images[idx] + '")';
-
-    // Schedule next slide
-    setTimeout(nextSlide, interval);
+    var slides = slidesContainer.children;
+    slides[current].classList.remove('active');
+    current = (current + 1) % slides.length;
+    slides[current].classList.add('active');
+    // Preload next
+    var nextIdx = (current + 1) % slides.length;
+    new Image().src = slides[nextIdx].style.backgroundImage.slice(5, -2);
   }
-
-  // Start cycling after initial interval
-  setTimeout(nextSlide, interval);
+  setInterval(nextSlide, interval);
 });
