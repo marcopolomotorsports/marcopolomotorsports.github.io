@@ -18,9 +18,13 @@
   opacity: 0;
 }
 
-/* ─── SCRAMBLE-ON-HOVER ───────────────────────────────── */
-
+/* ── HERO TITLE SCRAMBLE ── */
 #main-title {
+  display: inline-block;      /* respect white-space, don’t wrap */
+  white-space: nowrap;        /* keep all text on one line */
+  min-width: max-content;     /* container never shrinks below full text width */
+  
+  /* your existing styles: */
   font-family: 'Space Mono', monospace;
   font-size: clamp(3rem, 10vw, 8rem);
   color: white;
@@ -33,5 +37,5 @@
 #main-title:hover {
   background-color: white;
   color: black;
-  text-shadow: 0 0 8px rgba(0,0,0,0.3); /* optional “pop” */
+  text-shadow: 0 0 8px rgba(0,0,0,0.3);
 }
