@@ -17,3 +17,21 @@
 #home.fade {
   opacity: 0;
 }
+
+/* ─── SCRAMBLE-ON-HOVER ───────────────────────────────── */
+
+#main-title {
+  font-family: 'Space Mono', monospace;
+  font-size: clamp(3rem, 10vw, 8rem);
+  color: white;
+  padding: 0 clamp(1rem, 2vw, 3rem);
+  border-radius: clamp(0.4rem, 0.75vw, 1rem);
+  transition: background-color 400ms, color 400ms;
+  cursor: default;
+}
+
+#main-title:hover {
+  background-color: white;
+  color: black;
+  text-shadow: 0 0 8px rgba(0,0,0,0.3); /* optional “pop” */
+}
