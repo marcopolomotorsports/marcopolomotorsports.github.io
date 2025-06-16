@@ -1,47 +1,34 @@
-// assets/js/slideshow.js
+document.addEventListener('DOMContentLoaded', () => {
+  const slides = {
+    a: document.querySelector('.slide-a'),
+    b: document.querySelector('.slide-b')
+  };
+  const order = ['a','b'];
+  let currLayer = 0;
+  let imgIdx = 0;
+  const images = Array.from({length:24}, (_,i) => `assets/images/slideshow/${i+1}.jpg`);
+  const interval = 5000;   // time between slides
 
-document.addEventListener('DOMContentLoaded', function() {
-  var hero = document.getElementById('home');
-  if (!hero) return;
-
-  var images = [];
-  for (var i = 1; i <= 24; i++) {
-    images.push('assets/images/slideshow/' + i + '.jpg');
-  }
-  var defaultImg = 'assets/images/slideshow/0.jpg';
-  hero.style.backgroundImage = 'url("' + defaultImg + '")';
-
-  // preload
-  images.forEach(function(src) { new Image().src = src; });
-
-  var shown = [];
-  var interval = 5000;      // time between slides
-  var fadeTime = 700;       // must match your CSS transition
+  // initialize both layers
+  slides[order[0]].style.backgroundImage = `url("${images[0]}")`;
+  slides[order[0]].classList.add('active');
+  // preload the rest
+  images.forEach(src => new Image().src = src);
 
   function nextSlide() {
-    if (shown.length === images.length) shown = [];
-
-    // pick random unused index
-    var idx;
-    do { idx = Math.floor(Math.random() * images.length); }
-    while (shown.includes(idx));
-    shown.push(idx);
-
-    var nextUrl = 'url("' + images[idx] + '")';
-
-    // 1) fade out
-    hero.classList.add('fade');
-
-    // 2) after fade out → swap image & fade in
-    setTimeout(function() {
-      hero.style.backgroundImage = nextUrl;
-      hero.classList.remove('fade');
-    }, fadeTime);
-
-    // 3) schedule next
+    imgIdx = (imgIdx + 1) % images.length;
+    const nextLayer = order[1 - currLayer];
+    // set next image
+    slides[nextLayer].style.backgroundImage = `url("${images[imgIdx]}")`;
+    // fade it in
+    slides[nextLayer].classList.add('active');
+    // fade out the old
+    slides[order[currLayer]].classList.remove('active');
+    // swap layers
+    currLayer = 1 - currLayer;
     setTimeout(nextSlide, interval);
   }
 
-  // kick off
+  // start
   setTimeout(nextSlide, interval);
 });

@@ -1,41 +1,80 @@
 /* assets/css/slideshow.css */
 
+/* ─── SLIDE LAYERS ─────────────────────────────────── */
 #home {
   position: relative;
   overflow: hidden;
+  width: 100%;
+  height: 100vh;
+}
 
-  /* Cover fully */
+/* both slide divs fill the container */
+.slide {
+  position: absolute;
+  inset: 0;                          /* top/right/bottom/left = 0 */
   background-size: cover !important;
   background-position: center !important;
+  opacity: 0;
+  transition: opacity 1s ease-in-out; /* smooth fade */
+  z-index: 0;
+}
 
-  /* animate opacity */
-  transition: opacity 0.7s ease-in-out;
+/* the visible one */
+.slide.active {
   opacity: 1;
 }
 
-/* when fading out */
-#home.fade {
-  opacity: 0;
+/* keep your frosted overlay and text on top */
+#home::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-color: rgba(255,255,255,0.05);
+  backdrop-filter: blur(2px);
+  pointer-events: none;
+  z-index: 1;
 }
 
-/* ── HERO TITLE SCRAMBLE ── */
-#main-title {
-  display: inline-block;      /* respect white-space, don’t wrap */
-  white-space: nowrap;        /* keep all text on one line */
-  min-width: max-content;     /* container never shrinks below full text width */
-  
-  /* your existing styles: */
-  font-family: 'Space Mono', monospace;
-  font-size: clamp(3rem, 10vw, 8rem);
-  color: white;
-  padding: 0 clamp(1rem, 2vw, 3rem);
-  border-radius: clamp(0.4rem, 0.75vw, 1rem);
-  transition: background-color 400ms, color 400ms;
-  cursor: default;
+.hero-text-wrapper {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  z-index: 2;
+}
+
+/* ─── INLINE TEXT BOXES ─────────────────────────────── */
+#main-title,
+#hero-subtitle {
+  display: inline-block;
+  white-space: nowrap;
+  background-color: rgba(0,0,0,0.4);
+  backdrop-filter: blur(4px);
+  border: 2px solid rgba(255,255,255,0.6);
+  border-radius: 0.75rem;
+  padding: 0.5rem 1rem;
+  transition: border-color 300ms, background-color 300ms;
 }
 
 #main-title:hover {
-  background-color: white;
-  color: black;
-  text-shadow: 0 0 8px rgba(0,0,0,0.3);
+  background-color: rgba(0,0,0,0.6);
+  border-color: rgba(255,255,255,1);
+}
+
+/* ─── TITLE & SUBTITLE FONTS ───────────────────────── */
+#main-title {
+  font-family: 'Space Mono', monospace;
+  font-size: clamp(1.5rem, 5vw, 3rem);
+  color: white;
+}
+
+#hero-subtitle {
+  font-family: sans-serif;
+  font-size: clamp(1rem, 3vw, 1.5rem);
+  color: white;
+  margin-top: 1rem;
 }
